@@ -1,0 +1,19 @@
+body{
+    background-color: #cdb4db;
+}
+section{
+
+    padding: 30px;
+    margin-left: 150px;
+    margin-right: 150px;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    background-color: #ffafcc;
+    height: 40rem
+}
+#firstcol{
+    background-color: #fcd5ce;
+}
+#secondcol{
+    background-color: #fec5bb;
+}

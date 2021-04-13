@@ -6,6 +6,12 @@ import numpy as np
 
 # Create your views here.
 class Chatting:
+
+    def __init__(self):
+        self.reactionmessage=[]
+        self.name={'192.168.0.13':"Rajshree"}
+        self.messagelist=[]
+
     def home(self, request):
         self.facec = cv2.CascadeClassifier('static/jsfile/haarcascade_frontalface_default.xml')
         self.model = FacialExpressionModel()
@@ -19,10 +25,16 @@ class Chatting:
         s.bind((host, port))
         s.listen(1)
         self.conn, addr = s.accept()
-        return render(request, 'home.html', {'msg_from_client': 'Client connect!!!'})
+        if addr[0] in self.name:
+            self.clientname=self.name[addr[0]]
+        self.messagelist.append(["Connected!!!", ""])
+        self.reactionmessage.append("Talk to Know!!!")
+        list=['Hi', 'Hello', 'Good Morning', 'Good Night']
+        return render(request, 'home.html', {'clientname':self.clientname, 'messagelist': self.messagelist, 'reaction_of_client': self.reactionmessage, 'list': list})
 
     def sendmsg(self, request):
         message = request.POST["msg_from_server"]
+        self.messagelist[-1][1]=message
         message = message.encode()
         self.conn.send(message)
 
@@ -43,8 +55,30 @@ class Chatting:
 
         incoming_message1 = self.conn.recv(1024)
         incoming_message1 = incoming_message1.decode()
+        self.messagelist.append([incoming_message1, ""])
 
         incoming_message2 = self.conn.recv(1024)
         incoming_message2 = incoming_message2.decode()
+        self.reactionmessage.append(incoming_message2)
 
-        return render(request, 'home.html', {'msg_from_client': incoming_message1, 'reaction_of_client': incoming_message2})
+        if incoming_message2 == "angry":
+            list = ['Dont lose patience, everything shall be fine', 'I understand your disagreement, but have patience',
+                    'Anger is not good for health']
+
+        elif incoming_message2 == "disgust":
+            list = ['I am sorry if I offended you', 'I did not mean that', 'I am sorry']
+
+        elif incoming_message2 == "afraid":
+            list = ['Have faith in God', 'Do you want me next to you', 'Are you okay? You can share with me.']
+        elif incoming_message2 == "happy":
+            list = ['May I also know the joke', 'Very happy for you']
+        elif incoming_message2 == "neutral":
+            list = ['Good Morning', 'Good night', 'Hi', 'Hello']
+        elif incoming_message2 == "sad":
+            list = ['Cheer up dear, everything shall be fine', 'Your mood really effects me',
+                    'Cannot see you like that', 'Tell what I can do for you']
+        else:
+            list = ['Its too good but yes true', 'You read it correct :)']
+
+        return render(request, 'home.html', {'clientname': self.clientname, 'messagelist': self.messagelist,
+                                             'reaction_of_client': self.reactionmessage, 'list':list})

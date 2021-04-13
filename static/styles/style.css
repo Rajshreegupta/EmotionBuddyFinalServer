@@ -1,6 +1,11 @@
 body{
     background-color: #cdb4db;
 }
+
+i{
+    font-size: 2.5rem;
+}
+
 section{
 
     padding: 30px;
@@ -11,9 +16,33 @@ section{
     background-color: #ffafcc;
     height: 40rem
 }
+
+.btn{
+    background-color: #cdb4db;
+}
+
 #firstcol{
     background-color: #fcd5ce;
 }
 #secondcol{
     background-color: #fec5bb;
 }
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
